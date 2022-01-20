@@ -1,0 +1,14 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+body * {
+  font-size: 2rem;
+}
+
+button {
+  width: 100px;
+  height: 100px;
+  color: black;
+}
