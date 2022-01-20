@@ -34,6 +34,7 @@ let muted = false;
 // set up volume
 exec(
 	`pactl list sinks | grep 'front-left:' | head -n 1`,
+	{env: {'PULSE_LOG': 4, 'XDG_RUNTIME_DIR': '/run/user/1000' }},
 	(error, stdout, stderr) => {
 		if (error) {
 			console.log(`error: ${error.message}`);
@@ -41,8 +42,8 @@ exec(
 		}
 		if (stderr) {
 			console.log(`stderr: ${stderr}`);
-			const systemVol = stderr.match(/(\d)+%/).length > 0;
-			if (systemVol.length)
+			const systemVol = stderr.match(/(\d)+%/);
+			if (systemVol)
 				volume = systemVol[1];
 			return;
 		}
