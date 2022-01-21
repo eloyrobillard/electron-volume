@@ -21,7 +21,8 @@ window.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.send('volume-mute');
   });
 
-  setupVol(currentVol);
+  // track volume changes from system side
+  setInterval(() => setupVol(currentVol), 200);
 });
 
 async function setupVol (currentVol) {
@@ -39,7 +40,6 @@ async function setupVol (currentVol) {
 			console.log(`stdout: ${stdout}`);
 			const systemVol = stdout.match(/(\d+)%/);
 			if (systemVol) {
-        currentVol.textContent = systemVol[1];
 				ipcRenderer.send('volume-set', systemVol[1]);
 			}
 			console.log(`system volume: ${systemVol[1]}`);

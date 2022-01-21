@@ -31,12 +31,10 @@ let volume = 0;
 let muted = false;
 
 ipcMain.on('volume-set', (event, arg) => {
-	if (muted) {
-		unmuteVolume();
-		muted = false;
+	if (!muted || arg != volume) {
+		event.reply('volume-reply', String(arg));
 	}
 	volume = arg;
-	// event.reply('volume-reply', String(volume));
 });
 
 ipcMain.on('volume-up', (event, arg) => {
