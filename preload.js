@@ -6,8 +6,9 @@ window.addEventListener('DOMContentLoaded', () => {
 	const downButton = document.getElementById('volume-down');
 	const muteButton = document.getElementById('volume-mute');
 	const currentVol = document.getElementById('current-volume');
-  
-  ipcRenderer.on('volume-reply', (event, arg) => currentVol.textContent = arg);
+	setupVol();
+
+  ipcRenderer.on('volume-reply', (event, arg) => currentVol.textContent = `${arg}%`);
 
 	upButton.addEventListener('click', () => {
     ipcRenderer.send('volume-up');
@@ -22,10 +23,10 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   // track volume changes from system side
-  setInterval(() => setupVol(currentVol), 200);
+  setInterval(() => setupVol(), 300);
 });
 
-async function setupVol (currentVol) {
+async function setupVol () {
 	return await exec(
 		`pactl list sinks | grep 'front-left:' | head -n 1`,
 		(error, stdout, stderr) => {
