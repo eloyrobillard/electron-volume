@@ -42,10 +42,8 @@ ipcMain.on('volume-up', (event, arg) => {
 		unmuteVolume();
 		muted = false;
 	}
-	volume++;
-	if (volume >= 100) {
-		volume = 100;
-	} else {
+	if (volume < 100) {
+		volume++;
 		setVolume(volume);
 	}
 	event.reply('volume-reply', String(volume));
@@ -56,10 +54,8 @@ ipcMain.on('volume-down', (event, arg) => {
 		unmuteVolume();
 		muted = false;
 	}
-	volume--;
-	if (volume <= 0) {
-		volume = 0;
-	} else {
+	if (volume > 0) {
+		volume--;
 		setVolume(volume);
 	}
 	event.reply('volume-reply', String(volume));
@@ -76,6 +72,8 @@ ipcMain.on('volume-mute', (event, arg) => {
 		event.reply('volume-reply', 'Muted');
 	}
 });
+
+// pactl get/set volume commands
 
 async function pactl (...args) {
 	const res = await spawn('pactl', args);
